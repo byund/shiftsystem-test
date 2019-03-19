@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100vh;
+}
+
+body {
+  font: 14px/1 'Open Sans', sans-serif;
+  color: #555;
+  background: #eee;
+}
+
+h1 {
+  padding: 50px 0;
+  font-weight: 400;
+  text-align: center;
+}
+
+p {
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+main {
+  min-width: 320px;
+  max-width: 1000px;
+  padding: 50px;
+  margin: 0 auto;
+  background: #fff;
+}
+
+section {
+  display: none;
+  padding: 20px 0 0;
+  border-top: 1px solid #ddd;
+  
+}
+
+input {
+  display: none;
+}
+
+label {
+  display: inline-block;
+  margin: 0 0 -1px;
+  padding: 15px 25px;
+  font-weight: 600;
+  text-align: center;
+  color: #bbb;
+  border: 1px solid transparent;
+}
+
+label:before {
+  font-family: fontawesome;
+  font-weight: normal;
+  margin-right: 10px;
+}
+
+label[for*='1']:before { content: '\f017'; } /* http://astronautweb.co/snippet/font-awesome/ */
+label[for*='2']:before { content: '\f00b'; }
+label[for*='3']:before { content: '\f073'; }
+label[for*='4']:before { content: '\f007'; }
+label[for*='5']:before { content: '\f0c0\f073'; }
+
+label:hover {
+  color: #888;
+  cursor: pointer;
+}
+
+input:checked + label {
+  color: #555;
+  border: 1px solid #ddd;
+  border-top: 2px solid orange;
+  border-bottom: 1px solid #fff;
+}
+
+#tab1:checked ~ #content1,
+#tab2:checked ~ #content2,
+#tab3:checked ~ #content3,
+#tab4:checked ~ #content4, 
+#tab5:checked ~ #content5 {
+  display: block;
+}
+
+
+
+
+@media screen and (max-width: 650px) {
+  label {
+    font-size: 0;
+  }
+  label:before {
+    margin: 0;
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  label {
+    padding: 15px;
+  }
+}
+
+
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 15px;
+    text-align: center;
+    /*font-size: 16px;*/
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background: green;
+}
+
+.filledButton{
+	
+    background-color: #4286F4;
+    border: none;
+    color: white;
+    padding: 5px 15px;
+    text-align: center;
+    /*font-size: 16px;*/
+    font-size: 16px;
+    cursor: pointer;
+}
+.filledButton:hover{
+    background-color:#1360DB;
+}
+
+.requestedButton{
+    background-color: #F4291A;
+    border: none;
+    color: white;
+    padding: 5px 15px;
+    text-align: center;
+    /*font-size: 16px;*/
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.requestedButton:hover{
+    background-color:#cc0000;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width:100%;
+    
+    
+}
+
+//.dyn-height {
+//    max-height:500px;
+//    overflow-y:auto;
+    
+    
+//}
+
+.infoTable td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    
+}
+
+.infoTable caption{
+  font-weight: bold;
+  font-size: 20px;
+}
+
+
+.infoTable tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+
+.notesInput {
+display: inline-block;
+height: 50px;
+}

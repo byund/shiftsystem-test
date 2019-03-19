@@ -1,0 +1,142 @@
+h1 {
+  padding: 50px 0;
+  font-weight: 400;
+  text-align: center;
+}
+h2,h3,h4{
+margin:20px;
+//margin-bottom:20px;
+text-align: center;
+}
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100vh;
+}
+
+body {
+  font: 14px/1 'Open Sans', sans-serif;
+  color: #555;
+  background: #eee;
+}
+
+.main {
+  min-width: 320px;
+  //max-width: 1000px;
+  padding: 25px;
+  overflow: hidden;
+  margin-top:0 auto;
+  background: #fff;
+}
+
+ul{
+padding:25px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    table-layout: fixed;
+    //width:100%;
+    //display:inline-block; 
+    vertical-align:top;
+    //align:center;
+    //margin: 5px, auto;
+    //max-height:600px;
+    //overflow:scroll; 
+}
+thead{
+display:block;
+overflow:auto;
+
+}
+tbody{
+display:block;
+overflow:auto;
+height:600px;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    height: 50px;
+    padding: 8px;
+    
+}
+
+p{
+margin:3%;
+padding:5%;
+align:center;
+}
+
+caption{
+  font-weight: bold;
+  font-size: 20px;
+}
+
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+
+label+input{
+	display:inline-block;
+	margin-left: 6px;
+}
+
+fieldset{
+border:none;
+}
+
+legend{
+//background-color:#000;
+//color:#fff;
+padding: 3px 6px;
+text-align:center;
+}
+
+.td-hidden{
+display:none;
+}
+
+
+.container-div{ //centers div and makes it take up whole block.
+	//margin:20px;
+	display:flex;
+	justify-content:space-evenly;
+	flex-flow: row;	
+	flex-wrap: wrap;
+	margin: 30px;
+	overflow: auto;
+}
+
+.vertical-flex{//WIll align things via flexbox vertically
+	display:flex;
+	flex-direction:column;
+	//justify-content:space-evenly;
+
+}
+.horizontal-flex{//will align things via flexbox horizontally
+	display:flex;
+	justify-content:space-evenly;
+	flex-flow:row;;
+	flex-wrap:wrap;
+}
+.content-div{ //Content divs will have a white background.
+  padding: 25px;
+  background: #fff;
+  min-width: 300px;
+  min-height: 300px;
+  //overflow:auto;
+}
+
+
+
+.overflow-div{
+overflow:auto;
+}

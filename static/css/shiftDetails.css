@@ -1,0 +1,88 @@
+h1 {
+  padding: 50px 0;
+  font-weight: 400;
+  text-align: center;
+}
+h2,h3,h4{
+margin:20px;
+//margin-bottom:20px;
+text-align: center;
+}
+
+html {
+  height: 100vh;
+}
+
+body {
+  font: 14px/1 'Open Sans', sans-serif;
+  color: #555;
+  background: #eee;
+}
+
+
+label{
+display:inline-block;
+padding:5px;
+
+}
+
+input{
+display:inline-block;
+//width:50%;
+
+}
+
+.actionButton{
+padding: 0 20px;
+text-align:center;
+color: #5caf50;
+font-size: 1rem;
+}
+
+.resultButton{
+padding: 0 50px;
+text-align:left;
+background:#42f4b6;
+//font-size:1.2rem;
+max-width:50%;
+line-height:initial;
+}
+.block{
+display:block;
+}
+.searchbar{
+width:20%;
+height:500px;
+
+
+}
+
+.searchResults{
+list-style-type:none;
+height:80%;
+overflow-y:auto;
+}
+.container-div{ //centers div and makes it take up whole block.
+        //margin:20px;
+        display:flex;
+        justify-content:space-evenly;
+        flex-flow: row;
+        flex-wrap: wrap;
+        margin: 30px;
+        //overflow: auto;
+}
+
+.horizontal-flex{//will align things via flexbox horizontally
+        display:flex;
+        justify-content:space-evenly;
+        flex-flow:row;;
+        flex-wrap:wrap;
+}
+.content-div{ //Content divs will have a white background.
+  padding: 25px;
+  background: #fff;
+  min-width: 300px;
+  min-height: 300px;
+  //overflow:auto;
+}
+

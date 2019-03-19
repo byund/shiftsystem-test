@@ -1,0 +1,100 @@
+.nav-container{
+	display: flex;
+	width: 100%;
+	background: #42cbf4; 
+	//Text styling...
+	font-family: Arial;
+	font-size: 1.2em;
+	list-style: none;
+}
+
+a {
+	font-family: Arial;
+	text-decoration: none;
+
+}
+
+.nav-item{
+	color: #3f4443;
+	padding: 0 1%;
+	display: block;
+	transition-duration: 0.5s;
+	position: relative;	
+}
+.nav-item ul {
+	list-style:none;
+
+	position: absolute; /*why does this do what it does.*/
+	left: 0;
+
+	background-color: #42cbf4;
+}
+.nav-item ul li{
+	visibility: hidden;
+	opacity: 0;
+	transition: all 0.5s ease;
+	margin-top: 1rem;
+}
+
+.nav-item:hover{
+	background:#25b4c4;
+	cursor: pointer;
+	
+}
+
+.nav-item ul {
+	display: none;
+}
+.nav-item:hover ul {
+	display: block;
+}
+
+.nav-item:hover > ul li{
+	visibility: visible;
+	opacity: 1;
+	display: block;
+}
+
+.nav-item ul li:hover{
+	background:#25b4c4;
+}
+
+span{
+	text-align: center;
+	margin: 2vh;
+}
+@media all and (max-width: 600px) { https://medium.freecodecamp.org/how-to-create-a-fully-responsive-navbar-with-flexbox-a4435d175dd3
+
+	.nav-container{
+		flex-wrap: wrap;
+	}
+	
+	.nav-item{
+		flex-basis:50%;
+	}
+
+}
+
+@media all and (max-width: 400px) { //for extremely small (e.g phone) screens.
+
+	.nav-container{
+		flex-wrap: wrap;
+	}
+
+	.nav-item{
+		flex-basis:100%;
+	}
+}
+/*
+ul li{
+	visibility: hidden;
+	opacity: 0;
+
+}
+nav ul li: hover{
+	visibility: visible;
+	opacity: 1;
+	display: block;
+
+}
+*/

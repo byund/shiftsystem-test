@@ -1,0 +1,8 @@
+At some point do the following....
+
+-Change ShiftList "checkinTime" to "startTime". It makes much more sense.
+-Ensure on the backend that an employee cannot sub for a shift that conflicts with their schedule.
+-Ensure on the backend that an employee cannot checkin by posting directly to the page from an invalid ip address.
+-Let ShiftSystem be accessible off campus.
+-Remove Day column?
+-Fix the checkintime->minutes late bug in currentShifts.

@@ -1,0 +1,294 @@
+
+<title>ShiftSystem Worker Console</title>
+<head>
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> 
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css"> 
+   <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.print.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/basic/jquery.qtip.min.css">
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script> 
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/basic/jquery.qtip.min.js"></script>
+   <script src = "{{url_for('static', filename='js/reportFunctions.js')}}"></script>
+   <script src = "{{url_for('static', filename='js/workerConsole.js')}}"></script> <!-- why does this only work when the script is placed after the variable is initialized -->
+</head>
+{% extends "errorMessage.html" %}
+{% block content %}
+
+<h1>ITS Helpdesk Worker Headquarters Test</h1>
+
+<main>
+  
+  <h2>Welcome, {{current_user.firstName}} {{current_user.lastName}} </h2>
+  <p style = "font-size:10px"> Not you? <a href= 'https://shiftsystem.its.carleton.edu/flaskLogout'>Log Out </a> </p>     
+   
+  <input id="tab1" type="radio" name="tabs" checked>
+  <label for="tab1">Clock In</label>
+    
+  <input id="tab2" type="radio" name="tabs">
+  <label for="tab2">Lab Rounds</label>
+    
+  <input id="tab3" type = "radio" name="tabs">
+  <label for="tab3">All Shifts</label>
+  
+  <input id="tab4" type="radio" name="tabs">
+  <label for="tab4">Sub Requests</label>
+
+  <input id="tab5" type="radio" name="tabs">
+  <label for="tab5">Shift Calendar</label>
+
+  
+    
+  <section id="content1"> <!--For this one you want a clock and the checkin button -->
+    
+   
+   <p>
+    {%if shiftInfo == None %}
+    
+      You don't currently have a shift.
+
+    {%else%}
+
+      You currently have a shift in {{shiftInfo[1]}} that starts at {{shiftInfo[0]}} 
+
+    {%endif%}
+
+    </p>
+    <p id = "locationText"> 
+
+     {% if location != "Unauthorized" %}
+	You are currently in {{location}}
+  <!-- {%else%}
+	You are currently in a location unauthorized for checking in.
+	
+   {%endif%} -->
+	</p>
+    <p>
+  <table class="infoTable" id = "upcomingShifts" >
+          <caption style="font-size: 16px; font-weight: bold;">Your Upcoming Shifts</caption>
+          <tr> <!-- defining the table headers... -->
+          <th>Location</th>
+          <th>Time</th>
+          <th>Date</th>
+          <th>Day</th>
+          </tr> 
+
+      {% for upcomingShift in upcomingShifts %}
+      <!-- each row is a tuple containing the following info: (shiftid, time, location, date, day, subRequested)-->
+      <tr>
+        <td>{{upcomingShift[2]}}</td>
+        <td>{{upcomingShift[1]}}</td>
+        <td>{{upcomingShift[3]}}</td>
+        <td>{{upcomingShift[4]}}</td>
+      </tr>
+      {% endfor %}
+
+
+        </table>
+    </p>
+
+
+    
+    
+    <span id = "checkinClock" style="font-size: 16px;">&nbsp;</span>
+     </p>
+    <!-- We will only template the button if the user is in an authorized location. -->
+   {% if location != "Unauthorized" %}
+    <!-- We want to disable the button and display check in time if the user has already checked in.-->
+     
+    <!-- disable the button if he's already checked in for a shift. -->
+    <p>
+    {%if shiftID != None %}
+
+    <button class="button" id="checkinButton" onclick = "checkIn({{employeeID}}, {{shiftID}})"  
+    {% if data[0] == True %} 
+
+    disabled > {{data[1]}} 
+
+    {%else%}
+
+    enabled > Check-In
+
+    {%endif%}
+
+    </button> 
+
+    {%else%}
+
+    <button class="button" id="checkinButton">No Shift</button>
+
+    {%endif%}
+    </p>
+
+    {%endif%}
+
+    <p id = "notesPara">
+    {% if shiftNotes %}
+	{{shiftNotes}}
+    {%elif shiftID and not shiftNotes%}
+	<button class = "button" id="notesButton" onclick="addShiftNotes(this)"> I have an excuse </button>
+    {%endif%}
+    </p>
+    <div>
+      <input type="radio" name="location" id="cmcRadio" value = "CMC"  {% if location == "CMC" %} checked = "checked" {%endif%} disabled>
+      <label for="cmcRadio">CMC</label>
+
+      <input type="radio" name="location" id="RITRadio" value = "ResearchIT" {% if location == "ResearchIT" %} checked = "checked" {%endif%} disabled>
+      <label for="RITRadio">The Libe</label>
+    </div>
+    
+      
+
+
+
+    <!-- <script>     
+     //This code is to ensure that if the user is already checked in, the button remains disabled even upon page refresh.
+    var checkedIn = '{{data[0]}}';
+    var checkInTime = '{{data[1]}}';
+  
+    window.onload = enableDisableCheckin(checkedIn, checkInTime); //Check if user is checked in on page reload.
+    </script>  -->   
+  
+  </section>
+    
+  <section id="content2">
+   
+     <p style = "font-size:20px"> CLICK ME! <a href= 'https://goo.gl/forms/99V0K6e05xWVSmAy1' target = '_blank'> Google Form for Lab Rounds </a> </p>     
+     <p>
+      Bacon ipsum dolor sit amet landjaeger sausage brisket, jerky drumstick fatback boudin ball tip turducken. Pork belly meatball t-bone bresaola tail filet mignon kevin turkey ribeye shank flank doner cow kielbasa shankle. Pig swine chicken hamburger, tenderloin turkey rump ball tip sirloin frankfurter meatloaf boudin brisket ham hock. Hamburger venison brisket tri-tip andouille pork belly ball tip short ribs biltong meatball chuck. Pork chop ribeye tail short ribs, beef hamburger meatball kielbasa rump corned beef porchetta landjaeger flank. Doner rump frankfurter meatball meatloaf, cow kevin pork pork loin venison fatback spare ribs salami beef ribs.
+    </p>
+    <p>
+      Jerky jowl pork chop tongue, kielbasa shank venison. Capicola shank pig ribeye leberkas filet mignon brisket beef kevin tenderloin porchetta. Capicola fatback venison shank kielbasa, drumstick ribeye landjaeger beef kevin tail meatball pastrami prosciutto pancetta. Tail kevin spare ribs ground round ham ham hock brisket shoulder. Corned beef tri-tip leberkas flank sausage ham hock filet mignon beef ribs pancetta turkey.
+    </p>
+  </section>
+
+  <section id="content3">
+    <p style= "font-weight: bold; font-size: 18px">All Shifts</p>
+    <div class = dyn-height id= "subRequestableShiftDiv">
+    <table class="infoTable"  id = "subRequestableShiftTable">
+     
+      <tr> <!-- defining the table headers... -->
+        <th>Location</th>
+	<th>Time</th>
+        <th>Date</th>
+        <th>Day</th>
+        <th>What are you looking at me for</th>
+      </tr> 
+   
+    {% for row in subRequestableShifts %} <!-- row is a tuple containing the following info: (shiftid, time, location, date, day, subRequested)-->
+    <tr>
+      <td>{{row[2]}}</td>
+      <td>{{row[1]}}</td>
+      <td>{{row[3]}}</td>
+      <td>{{row[4]}}</td>
+      {% if row[5] == False %} <!-- if the shift has not been sub requested -->
+      <td><button class="button" id = "subRequestButton {{row[0]}}" value = "subUnrequested" onclick = "requestUnrequestSub(this, '{{row[0]}}', '{{employeeID}}')" >Request Sub</button> </td> <!-- you can pass the direct shiftid this is amazing!-->
+      {% else %}
+		{% if row[6] == False  %}
+      <td><button class="requestedButton" id = "subRequestButton {{row[0]}}" value = "subRequested" onclick = "requestUnrequestSub(this, '{{row[0]}}', '{{employeeID}}')">Unrequest Sub</button> </td>
+     		{% else %}
+		
+      <td><button class="filledButton" id = "subRequestButton {{row[0]}}" value = "subRequested" onclick = "requestUnrequestSub(this, '{{row[0]}}', '{{employeeID}}')">Filled-Unrequest</button> </td>
+		 {%endif%}
+	{% endif %}
+    </tr>
+    
+    {% endfor %}
+    
+    </table>
+    </div>
+  </section>
+    
+  <section id="content4"> <!--For this one you want the sub requests -->
+    
+    <p style= "font-weight: bold; font-size: 18px">Available Sub Requests</p>
+    <div class = dyn-height id = "subbableShiftDiv">
+      <table class="infoTable" style = "width:100%" id = "subbableShiftTable">
+        <tr> <!-- defining the table headers... -->
+        <th>Location</th>
+        <th>Time</th>
+        <th>Date</th>
+        <th>Day</th>
+        <th>Employee</th>
+        <th>?!?!?!?</th>
+      </tr> 
+      {% for row in subbableShifts %} <!-- row is a tuple containing the following info: (shiftid, time, location, date, day, original employee firstname, original employeelastname)-->
+      
+      <tr id = "shift_{{row[0]}}">
+        <td>{{row[2]}}</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[3]}}</td>
+        <td>{{row[4]}}</td>
+        <td>{{row[6] ~ " " ~ row[7]}}</td>
+        <td><button class="button" id = "subButton_shift_{{row[0]}}_emp_{{row[5]}}" value = "pickupSub" onclick = "pickupDropSub(this, {{employeeID}})"> Pickup
+       <!-- {%if row[5] == employeeID %}
+
+          disabled > Your Shift
+
+          {%else%}
+
+          >Pickup
+
+          {%endif%} -->
+        </button> </td> 
+  
+       
+        
+      <!-- TODO- Encode employee who is logged in information into the load method so that you can pass it to the pickup sub buttons when it's called.-->
+          
+      </tr>
+      {% endfor %}
+      </table>
+    </div>
+
+  <p style= "font-weight: bold; font-size: 18px">Shifts You're Subbing For</p>
+    <div class = dyn-height id = "subbingShiftDiv">
+      <table class="infoTable" style = "width:100%" id = "subbingShiftTable">
+        <tr> <!-- defining the table headers... -->
+        <th>Location</th>
+        <th>Time</th>
+        <th>Date</th>
+        <th>Day</th>
+        <th>Employee</th>
+        <th>?!?!?!?</th>
+      </tr> 
+      {% for row in subbingShifts %} <!-- row is a tuple containing the following info: (shiftid, time, location, date, day, origEmployeeID, original employee firstname, original employee lastname)-->
+      
+      <tr id = "shift_{{row[0]}}">
+        <td>{{row[2]}}</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[3]}}</td>
+        <td>{{row[4]}}</td>
+        <td>{{row[6] ~ " " ~ row[7]}}</td>
+        <td><button class="button" id = "subbingButton_ shift_{{row[0]}}_emp_{{row[5]}}" value = "dropSub" onclick = "pickupDropSub(this, {{employeeID}})">Drop</button> </td> 
+        
+        
+      <!-- TODO- Encode employee who is logged in information into the load method so that you can pass it to the pickup sub buttons when it's called.-->
+          
+      </tr>
+      {% endfor %}
+      </table>
+    </div>    
+    
+    <!-- <p>
+      Bacon ipsum dolor sit amet beef venison beef ribs kielbasa. Sausage pig leberkas, t-bone sirloin shoulder bresaola. Frankfurter rump porchetta ham. Pork belly prosciutto brisket meatloaf short ribs.
+    </p>
+    <p>
+      Brisket meatball turkey short loin boudin leberkas meatloaf chuck andouille pork loin pastrami spare ribs pancetta rump. Frankfurter corned beef beef tenderloin short loin meatloaf swine ground round venison.
+    </p> -->
+  </section>
+    
+  <section id="content5">
+    <div id="calendar">
+
+    </div>
+  </section>
+
+  
+
+
+  
+</main>
+
+{% endblock %}

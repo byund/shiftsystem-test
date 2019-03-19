@@ -1,0 +1,12 @@
+<html>
+ <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/errorMessage.css') }}">
+ </head> 
+ <body> 
+    <div class="errorDiv">
+      <p> We've gotten scattered reports of users not being able to pick up shifts properly. If you see an issue where you picked up a shift and it didn't stick the first time around, send an email to <a href="mailto:appachara@carleton.edu?subject=ShiftSystem%20SubRequest%20Bug"> appachara@carleton.edu </a> with your location, date, time to the best of your knowledge, and a brief description of what went wrong. Thanks! -Anirudh </p>
+    </div>  
+  </body>
+  {% block content %}
+  {% endblock %}
+</html>

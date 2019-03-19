@@ -1,0 +1,71 @@
+<html>
+<head>
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/shiftDetails.css') }}"> 
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/adminConsole.css') }}"> 
+   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css">
+   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+   <script type="text/javascript" src=https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js></script>
+   <script src="{{ url_for('static', filename='js/shiftDetails.js') }}"></script>
+    
+</head>
+<title> Shift Details </title>
+{% extends "adminNavBar.html" %}
+{% block content %}
+<body>
+<h1> Shift Details </h1>
+{% if shiftID != None %}
+<script type="text/javascript"> document.onload=getShiftDetails({{shiftID}}) </script>
+{% endif %}
+<div class="container-div">
+  <div id="searchDiv" class="vertical-flex searchBar">
+    <div>
+      <form id=searchCriteria>
+        <div class="block">
+          <label for="daySelector"> Day: </label>
+          <select id="daySelector" name="day">
+            <option></option>
+            <option value = "Sunday"> Sunday </option>
+            <option value = "Monday"> Monday </option>
+            <option value = "Tuesday"> Tuesday </option>
+            <option value = "Wednesday"> Wednesday </option>
+            <option value = "Thursday"> Thursday </option>
+            <option value = "Friday"> Friday </option>
+            <option value = "Saturday"> Saturday </option>
+          </select>
+        </div>
+        <div class="block">
+         <label for="dateSelector"> Date </label>
+         <input type="date" id="dateSelector" name="date" required>
+        </div>
+        <div class="block">
+          <label for="timeSelector"> Start Time </label>
+          <input type="time" id="timeSelector" name="startTime">
+        </div>
+        <div class="block">
+          <label for="locationSelector"> Location </label>
+          <select id="locationSelector" name="location">
+            <option> </option>
+            <option value = "CMC"> CMC  </option>
+            <option value = "ResearchIT"> ResearchIT  </option>
+          </select> 
+        </div>	
+      </form>
+      <button id="searchButton" class="actionButton" onclick="searchShifts()"> Search </button>
+    </div>
+    <div id="searchResultsDiv">
+      <ul id="resultsList" class="searchResults">
+      </ul>
+    </div>
+  </div>
+  <div id="shiftDetailsDiv">
+    <div id="shiftInfoDiv">
+      <h3> Shift Info </h3>
+    </div>
+    <div id="employeeInfoDiv">
+      <h3> Employees </h3>
+    </div>
+  </div>
+</div>
+</body>
+{% endblock %}
+</html>

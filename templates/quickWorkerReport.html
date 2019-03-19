@@ -1,0 +1,57 @@
+<html>
+<head>
+    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/adminConsole.css') }}">
+</head>
+{% extends 'adminNavBar.html' %}
+{% block content %}
+<body>
+<main>
+<div>
+<form action= "" method = "get">
+ <div>
+  <label for="startDate"> From: </label>
+  <input type="date"  id="startDate" name="startDate" min = {{lowerDateBound}} max = {{upperDateBound}}  required>
+
+  <label for="endDate"> Till: </label>
+  <input type="date"  id="endDate" name="endDate" min = {{lowerDateBound}} max = {{upperDateBound}} required>
+
+	
+ </div>
+  <div>
+   <input type = "submit" value = "Refresh Report">
+  </div>
+</form>
+</div>
+<div style="main">
+<table id = "quickWorkerReportTable">
+	{% if startDate != None and endDate != None %}
+	<caption style="font-size: 16px; font-weight: bold;">Shift Attendance by Worker {{startDate}} to {{endDate}}</caption>
+          {%else%}
+	<caption style="font-size: 16px; font-weight: bold;">Shift Attendance by Worker (Past 24 Hours)</caption>
+	{%endif%} 
+	  <tr> <!-- defining the table headers... -->
+          <th>Employee Name</th>
+          <th>Early</th>
+	  <th>First 5 Min. </th>
+	  <th>First 10 Min. </th>
+	  <th>First 15 Min. </th>
+	  <th>Missed </th>
+          </tr>
+
+	{% for row in quickWorkerReportTuple %}
+	<tr>
+	    <td> {{row[0]}} </td>
+	    <td> {{row[1]}} </td>
+	    <td> {{row[2]}} </td>
+	    <td> {{row[3]}} </td>
+	    <td> {{row[4]}} </td>
+	    <td> {{row[5]}} </td>
+	</tr>
+	{% endfor %}
+	
+		</table>
+</div>
+</main>
+</body>
+{% endblock %}
+</html>

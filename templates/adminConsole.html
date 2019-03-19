@@ -1,0 +1,79 @@
+<html>
+<head>
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/adminConsole.css') }}"> 
+   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+   
+   <script src = "{{url_for('static', filename='js/reportFunctions.js')}}"></script> 
+   <script src = "{{url_for('static', filename='js/adminConsole.js')}}"></script> 
+   
+   <script type="text/javascript">
+
+    chartDraw({{total}}, {{fiveMin}}, {{tenMin}}, {{fifteenMin}}, {{missed}});
+   </script>
+    
+</head>
+<title> ShiftSystem Admin Console </title>
+
+{% extends '/adminNavBar.html' %}
+{% block content %}
+<h1>ITS Helpdesk Admin Console</h1>
+<body>
+<div class="container-div">
+
+    <div id ="shiftBreakdownDiv" class="vertical-flex-div">
+      <h3> Shift Breakdown </h3>
+      <div class="content-div">
+        <div id="piechart">
+
+
+        </div>
+
+        <p>
+<a href="/workerQuickReport"> View Worker Report </a><br>
+In the last 24 hours there have been {{total}} total Shifts. <br>
+{{missed}} were missed check-ins.<br>
+{{fiveMin}} checked in within the first 5 Minutes.<br>
+{{tenMin}} checked in within the first 10 minutes.<br>
+{{fifteenMin}} checked in within the first 15 minutes.<br>
+        </p>
+
+
+        </div>
+    </div>
+
+  <div id="workerShiftInfoDiv" class="vertical-flex-div">	
+      <h3> Who's On Now </h3>
+    <div id = "currentShiftDiv" class = "content-div container-div" >
+	<script type="text/javascript">
+	getCurrentShiftInfo()
+	</script>
+    </div>
+   
+    <div id ="shiftHistoryDiv" class="vertical-flex-div">
+      <h3> Shift History </h3>
+       <div class="content-div">
+         <div id="linechart">
+         </div>
+       </div>
+    </div>
+
+      <!--<h3> Administrative Functions for the Discerning ITS Supervisor </h3>
+    <div id = "adminFunctionsDiv" class = "content-div">
+	<ul>
+	  <li> <a href = "/shiftCalendar"> This Term's Full Schedule </a></li>
+	  <li> <a href = "/workerQuickReport" > Quick Worker Report </a></li>
+	  <li> <a href = "/manageWorkers" > Manage Workers </a> </li>
+	  <li> <a href = "/workerDetails" > Worker Details </a> </li>
+	  <li> <a href = "/shiftDetails" > Shift Details </a> </li>
+	</ul> 
+    </div>
+-->
+  </div>
+</div>
+
+</body>
+{% endblock %}
+</html>

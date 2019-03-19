@@ -1,0 +1,219 @@
+<html>
+
+<head>
+
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/adminConsole.css') }}"> 
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   <script src = "{{url_for('static', filename='js/reportFunctions.js')}}"></script>
+   <script src = "{{url_for('static', filename='js/workerDetails.js')}}"></script> 
+</head>
+
+{% extends "adminNavBar.html" %}
+{% block content %}
+
+<title> Worker Details </title>
+
+{% if employeeID is not defined %} <!--http://jinja.pocoo.org/docs/2.10/templates/#defined-->
+<h1> Select a Worker </h1>
+{% else %}
+<h1>Overview for {{firstName}} {{lastName}}</h1>
+{%endif%}
+
+<body>
+  <div>
+    <form method='GET' id="workerSelectorForm">  
+      <label for= "workerSelector"> Select Worker</label>
+      <select id = "workerSelector" name = "workerSelector" onchange="workerSelectorForm.submit()">
+      {% for row in workers %}
+      <option {%if employeeID is defined %}} 
+		{% if row[0]|int == employeeID|int %} 
+		selected={{employeeID}} 
+		{% endif %} 
+	{% endif %} 
+	value = {{row[0]}}> {{row[1] + " " + row[2]}} </option>
+      {% endfor %} 
+      </select>
+    </form>
+  </div>
+
+  <div class = "main">
+
+  <div class = "container-div"; id="overviewDiv">
+  <div id = "chartDiv" style= "padding:20px; display:inline-block; vertical-align:top;">
+   
+    <div id = "piechart">
+      <script type="text/javascript">
+      chartDraw({{total}}, {{fiveMin}}, {{tenMin}}, {{fifteenMin}}, {{missed}});
+      
+      </script>
+    </div>
+   {% if employeeID is defined %} 
+    <label for= "timeRangeSelector"> Time Range: </label>
+      <select id = "timeRangeSelector" onchange="updatePieChart(value, {{employeeID}})" >
+        <option value = 1> Past 24 Hours </option>
+        <option value = 7 selected=selected> Past Week </option>
+        <option value = 30> Past Month (30 Days) </option>
+        <option value = "all"> All Time </option>
+        <option value = "custom"> Custom </option>
+      </select>
+  {% endif %}
+  </div>
+  
+  <div id = "workerInfoDiv" style="display:inline-block; overflow: hidden; vertical-align:top; background: lightblue;">
+  
+    <h3> Worker Details </h3>
+    <label for="employeeID"> Employee ID</label>
+    <label id="employeeID">{{employeeID}}</label>
+    
+    <label for= "employeeFirstName"> First Name </label>
+    <input type= "text" id = "employeeFirstName" placeholder = {{firstName}} >
+    
+    <label for= "employeeLastName"> Last Name </label>
+    <input type= "text" id = "employeeLastName" placeholder = {{lastName}}>
+    
+    <label for= "employeeUsername"> Username </label>
+    <input type= "text" id = "employeeUsername" placeholder = {{username}}>
+    
+    <label for="phoneNumber"> Phone Number </label>
+    <input type="text" id="phoneNumber" placeholder = {{phoneNumber}}>
+    
+    <label for="classYear"> Class Year </label>
+    <input type="text" id="classYear" placeholder = {{classYear}}>
+  
+  </div>
+
+ </div>
+ 
+ <div id = "tablesDiv">
+  <h2> Overview of Shifts </h2>
+  <div id="tablesContainerDiv" class="container-div">
+  <div id="pastShiftsTableDiv">
+    <h3> Past Shifts </h3>
+
+     <fieldset>	
+      <legend> Choose Columns </legend>
+
+        <input class="checkbox" type="checkbox" id="id" name="column" value="idCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "id"> ID </label>
+     
+        <input class="checkbox" type="checkbox" id="location" name="column" value="locCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "location"> Location </label>
+
+        <input class="checkbox" type="checkbox" id="day" name="column" value="dayCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "day"> Day </label>
+
+        <input class="checkbox" type="checkbox" id="date" name="column" value="dateCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "date"> Date </label>
+
+        <input class="checkbox" type="checkbox" id="time" name="column" value="timeCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "time"> Time </label>
+
+        <input class="checkbox" type="checkbox" id="checkinTime" name="column" value="checkinTimeCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "checkinTime"> Check In Time </label>
+
+        <input class="checkbox" type="checkbox" id="subReq" name="column" value="subReqCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "subReq"> Sub Requested </label>
+	
+        <input class="checkbox" type="checkbox" id="subFil" name="column" value="subFilCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "subFil"> Sub Filled </label>
+      </fieldset>
+    <table id="pastShiftsTable">
+      <tr> <!-- Define table headers...-->
+        <th class="idCol">ID</th>
+	<th class="locCol"> Location </th>
+        <th class="dayCol">Day</th>	
+        <th class="dateCol">Date</th>	
+        <th class="timeCol">Time</th>	
+        <th class = "checkinTimeCol">Check In Time</th>
+	<th class = "notesCol"> Notes </th>
+	<th class = "subReqCol"> Sub Requested? </th>
+	<th class = "subFilCol"> Sub Filled? </th>	
+     </tr>
+         
+    {% for row in pastShifts %}<!-- row is a tuple containing the following info: (shiftid, isSub, time, location, day, date, checkinTime)-->
+    <tr {% if  row[1] == True %} style="background-color:42f4eb" {% endif %}>
+      <td class="idCol"><a href="/shiftDetails?shiftID={{row[0]}}"> {{row[0]}}</a></td>
+     <!-- <td> {% if  row[1] == True %} Sub {% endif %}</td> -->
+      <td class="locCol">{{row[2]}}</td>
+      <td class="dayCol">{{row[3]}}</td>
+      <td class="dateCol">{{row[4]}}</td>
+      <td class="timeCol">{{row[5]}}</td>
+      <td class="checkinTimeCol">{{row[6]}}</td>
+      <td class="notesCol"> {% if row[7] %} {{row[7]}}  {% endif %}</td>
+      <td class="subReqCol"> {% if row[8] == 0 %} No {% elif row[7] == 1%} Yes {% endif %}</td>
+      <td class="subFilCol"> {% if row[9] == 0 %} No {% elif row[8] == 1%} Yes {% endif %}</td>
+    </tr>
+
+    {% endfor %}
+
+   
+
+    </table>
+  </div>
+  <div id="upcomingShiftsTableDiv">
+  
+      <h2> Future Shifts </h2>
+
+     <fieldset>	
+      <legend> Choose Columns </legend>
+
+        <input class="checkbox" type="checkbox" id="id" name="column" value="idCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "id"> ID </label>
+     
+        <input class="checkbox" type="checkbox" id="location" name="column" value="locCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "location"> Location </label>
+
+        <input class="checkbox" type="checkbox" id="day" name="column" value="dayCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "day"> Day </label>
+
+        <input class="checkbox" type="checkbox" id="date" name="column" value="dateCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "date"> Date </label>
+
+        <input class="checkbox" type="checkbox" id="time" name="column" value="timeCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "time"> Time </label>
+
+        <input class="checkbox" type="checkbox" id="subReq" name="column" value="subReqCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "subReq"> Sub Requested </label>
+	
+        <input class="checkbox" type="checkbox" id="subFil" name="column" value="subFilCol" onclick="toggleColVis(this)" checked /> 
+        <label class="checkbox" for= "subFil"> Sub Filled </label>
+      </fieldset>
+      <table id="upcomingShiftsTable">
+ 
+   
+      <tr> <!-- Define table headers...-->
+        <th class="idCol">ID</th>
+	<th class="locCol"> Location </th>
+        <th class="dayCol">Day</th>	
+        <th class="dateCol">Date</th>	
+        <th class="timeCol">Time</th>	
+	<th class = "subReqCol"> Sub Requested? </th>
+	<th class = "subFilCol"> Sub Filled? </th>	
+     </tr>
+        
+    {% for row in upcomingShifts %}<!-- row is a tuple containing the following info: (shiftid, time, location, date, day, subRequested)-->
+    <tr>
+      <td class="idCol"><a href="/shiftDetails?shiftID={{row[0]}}" > {{row[0]}}</a></td>
+      <td class="locCol">{{row[2]}}</td>
+      <td class="dayCol">{{row[4]}}</td>
+      <td class="dateCol">{{row[3]}}</td>
+      <td class="timeCol">{{row[1]}}</td>
+      <td class="subReqCol">{% if row[5] %} {{row[7]}} {% else %} No {% endif %}</td>
+      <td class="subFilCol"> {% if not row[6] %} No {% endif %}</td>
+    </tr>
+
+    {% endfor %}
+   
+
+    </table>
+   </div>
+  </div>
+
+  </div>
+ 
+  </div>
+
+</body>
+{% endblock %}
+</html>

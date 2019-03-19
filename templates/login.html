@@ -1,0 +1,14 @@
+<div class="login-page">
+  <!-- https://codepen.io/colorlib/pen/rxddKy -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}"> 
+  <div class="form">
+    <p> ITS Shift System </p>
+     <form class="login-form">
+      <input type="text" placeholder="username" required/>
+      <input type="password" placeholder="password" required/>
+      <button formmethod="POST" action = "/dologin.html">Login</button>
+      {%if invalid == True %} <p> Invalid Credentials </p> {%endif%}
+
+    </form>
+  </div>
+</div>

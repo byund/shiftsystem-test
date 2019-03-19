@@ -1,0 +1,34 @@
+<html>
+  <head>
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/adminNavBar.css') }}">
+  </head>
+  
+  <nav class="nav-container">
+    <span> Hello {{current_user.firstName}} {{current_user.lastName}} </span>
+    <ul class="nav-container">
+     <li class="nav-item"> <a href="/adminConsole" > Home </a></li>
+   <li class="nav-item"> <a href="/shiftCalendar"> This Term's Schedule </a></li>
+   <li class="nav-item"> 
+     Employees
+     <ul>
+      <li><a href="/workerDetails"> View Employee Details </a></li>
+      <li><a href="/manageWorkers"> Add/Remove Employees </a></li>
+    </ul>
+   </li>
+   <li class="nav-item">
+    Shifts
+    <ul>	
+      <li><a href="/shiftDetails"> View Shift Details </a></li>
+      <li><a href="#"> Add/Remove Employees </a></li>
+    </ul>
+   </li>
+   
+  </ul> 
+
+   <span> Currently Browsing {{current_user.database}} </span>
+ </nav>
+ 
+  {% block content %}
+  {% endblock %} 
+
+</html>
